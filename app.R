@@ -9,6 +9,9 @@
 
 library(shiny)
 library(leaflet)
+library(sf)
+
+setwd(here::here())
 
 tracks <- read_sf("data/salem_sound_tracks.shp")
 
@@ -31,7 +34,7 @@ server <- function(input, output) {
       addPolylines(data = tracks,
                    col = "red",
                    weight = 3,
-                   layerId = ~`Youtube Li`,
+                   layerId = ~ Youtube.Li,
                    highlight = highlightOptions(color = "blue",weight = 5, 
                                                 bringToFront = F, opacity = 1))
     
