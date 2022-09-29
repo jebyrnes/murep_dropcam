@@ -10,10 +10,12 @@
 library(shiny)
 library(leaflet)
 library(sf)
+library(dplyr)
 
 setwd(here::here())
 
-tracks <- read_sf("data/salem_sound_tracks.shp")
+tracks <- read_sf("data/salem_sound_tracks.shp") |>
+   mutate(`Youtube Li` = Youtube.Li) #deal with difference in versions of sf
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -34,7 +36,7 @@ server <- function(input, output) {
       addPolylines(data = tracks,
                    col = "red",
                    weight = 3,
-                   layerId = ~ Youtube.Li,
+                   layerId = ~ `Youtube Li`,
                    highlight = highlightOptions(color = "blue",weight = 5, 
                                                 bringToFront = F, opacity = 1))
     
