@@ -14,8 +14,15 @@ library(dplyr)
 
 setwd(here::here())
 
-tracks <- read_sf("data/salem_sound_tracks.shp") |>
-   mutate(`Youtube Li` = Youtube.Li) #deal with difference in versions of sf
+tracks <- read_sf("data/tracks/salem_sound_tracks_density.shp") %>%
+  mutate(`Kelp Dens#` = ifelse(is.na(`Kelp Dens#`),0,`Kelp Dens#`))
+  #rename(`YouTube Li` = Youtube.Li) #deal with difference in versions of sf
+
+
+pal <- colorNumeric(
+  palette = "Greens",
+  domain = tracks$`Kelp Dens#`)
+
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -34,11 +41,18 @@ server <- function(input, output) {
                        options = providerTileOptions(noWrap = TRUE)) |>
       setView(lat = 42.5264892, lng = -70.8222588, zoom = 12) |>
       addPolylines(data = tracks,
-                   col = "red",
+                   col = ~pal(`Kelp Dens#`),
                    weight = 3,
-                   layerId = ~ `Youtube Li`,
+                   layerId = ~ `YouTube Li`,
                    highlight = highlightOptions(color = "blue",weight = 5, 
-                                                bringToFront = F, opacity = 1))
+                                                bringToFront = F, opacity = 1))%>%
+      addLegend("bottomright", 
+                pal = pal, 
+                values = tracks$`Kelp Dens#`,
+                title = "Kelp Relative Abundance Score",
+                opacity = 1
+      )
+    
     
   })
   
