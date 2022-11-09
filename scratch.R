@@ -12,7 +12,8 @@ pal <- colorNumeric(
   domain = tracks$`Kelp Dens#`)
 
 leaflet() |>
-  addProviderTiles(providers$Esri.WorldGrayCanvas, group = "Default Maptile",
+  addProviderTiles(providers$Esri.WorldGrayCanvas, 
+                   group = "ESRI World Gray Canvas",
                               options = providerTileOptions(noWrap = TRUE)) |>
   setView(lat = 42.5264892, lng = -70.8222588, zoom = 12) |>
   addPolylines(data = tracks,
@@ -26,7 +27,11 @@ leaflet() |>
               values = tracks$`Kelp Dens#`,
               title = "Kelp Relative Abundance Score",
               opacity = 1
-    )
+    ) %>%
+  addLayersControl(
+    baseGroups = c("ESRI World Gray Canvas", "Toner by Stamen")
+  )
+
 
 
 
