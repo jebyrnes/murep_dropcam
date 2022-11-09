@@ -15,8 +15,6 @@ library(dplyr)
 setwd(here::here())
 
 tracks <- read_sf("data/tracks/salem_sound_tracks_density.shp") %>%
-  rename(`YouTube Li` = YouTube.Li,
-         `Kelp Dens#` = Kelp.Dens.) %>% #deal with difference in versions of sf
   mutate(`Kelp Dens#` = ifelse(is.na(`Kelp Dens#`),0,`Kelp Dens#`))
 
 
