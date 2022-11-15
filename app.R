@@ -18,8 +18,6 @@ tracks <- read_sf("data/tracks/salem_sound_tracks_density.shp")
 warning(names(tracks))
 
 tracks <- tracks |>
-  rename(`Kelp Dens#` = `Kelp.Dens.`,#temp
-         `YouTube Li` = YouTube.Li) |> #temp
   mutate(`Kelp Dens#` = ifelse(is.na(`Kelp Dens#`),0,`Kelp Dens#`))
 
 
