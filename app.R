@@ -27,12 +27,39 @@ pal <- colorNumeric(
 
 
 # Define UI for application that draws a histogram
+
 ui <- fluidPage(
-  leafletOutput("mymap"),
-  uiOutput("video")
+  titlePanel("The Subtidal Environment of Salem Sound"),
   
-  
+  fluidRow(
+    column(1,
+           checkboxGroupInput("layers",
+                         "Basemap Choice",
+                         choices = c("Gray Canvas"),
+                         selected = "Gray Canvas"
+                         ),
+           
+           checkboxGroupInput("data_sources",
+                              "Data Sources",
+                              choices = c("Dropcam Tracks",
+                                          "Diver Biomass",
+                                          "Sidescan Survey Area"),
+                              selected = c("Dropcam Tracks"))
+           ),
+    
+    column(7,
+           HTML("<b>Click a Track to Open a Video</b>"),
+           leafletOutput("mymap",
+                         height = 700)
+    ),
+    
+    column(4,
+           HTML("<b>Video of Track</b>"),
+           uiOutput("video")
+    )
+  )
 )
+
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
@@ -47,7 +74,7 @@ server <- function(input, output) {
                    weight = 3,
                    layerId = ~ `YouTube Li`,
                    highlight = highlightOptions(color = "blue",weight = 5, 
-                                                bringToFront = F, opacity = 1))%>%
+                                                bringToFront = F, opacity = 1)) %>%
       addLegend("bottomright", 
                 pal = pal, 
                 values = tracks$`Kelp Dens#`,
@@ -62,6 +89,12 @@ server <- function(input, output) {
     p <- input$mymap_shape_click
   })
   
+  
+  
+  observeEvent(input$data_sources, {
+    proxy <- leafletProxy('mymap')
+    if (!("Dropcam Tracks" %in% input$data_sources)){ proxy %>% removeShape(`Kelp Dens#`)}
+  })
   
   output$video <- renderUI({
 #    print(selected_track())

@@ -6,10 +6,17 @@ tracks <- read_sf("data/tracks/salem_sound_tracks_density.shp") |>
   mutate(`Kelp Dens#` = ifelse(is.na(`Kelp Dens#`),0,`Kelp Dens#`))
   #rename(`YouTube Li` = Youtube.Li) #deal with difference in versions of sf
 
+biomass <- read_sf("data/biomass/salem_sound_dive_locs.shp")
+
 
 pal <- colorNumeric(
   palette = "Greens",
   domain = tracks$`Kelp Dens#`)
+
+
+pal_biomass <- colorNumeric(
+  palette = "PuOr",
+  domain = biomass$`Mean SL bi`)
 
 leaflet() |>
   addProviderTiles(providers$Esri.WorldGrayCanvas, 
@@ -20,17 +27,24 @@ leaflet() |>
                col = ~pal(`Kelp Dens#`),
                weight = 3,
                layerId = ~`YouTube Li`,
-               highlight = highlightOptions(color = "blue",weight = 5, 
+               highlight = highlightOptions(color = "blue",weight = 5,
                                             bringToFront = F, opacity = 1)) %>%
-    addLegend("bottomright", 
-              pal = pal, 
+    addLegend("bottomright",
+              pal = pal,
               values = tracks$`Kelp Dens#`,
               title = "Kelp Relative Abundance Score",
               opacity = 1
     ) %>%
   addLayersControl(
     baseGroups = c("ESRI World Gray Canvas", "Toner by Stamen")
-  )
+  ) %>%
+  addPolygons(data = biomass,
+              fill = "black",
+              stroke = TRUE,
+              color = ~pal_biomass(`Mean SL bi`),
+              popup = ~paste(name, `Mean SL bi`),
+              weight = 1.5,
+              opacity = 0.8,)
 
 
 
