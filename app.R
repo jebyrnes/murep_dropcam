@@ -11,15 +11,18 @@ library(shiny)
 library(leaflet)
 library(sf)
 library(dplyr)
+library(RColorBrewer)
+library(ggplot2)
 
 setwd(here::here())
 
 tracks <- read_sf("data/tracks/salem_sound_tracks_density.shp") 
-warning(names(tracks))
+#warning(names(tracks))
 
 tracks <- tracks |>
   mutate(`Kelp Dens#` = ifelse(is.na(`Kelp Dens#`),0,`Kelp Dens#`))
 
+biomass <- read_sf("data/biomass/salem_sound_dive_locs.shp")
 
 pal <- colorNumeric(
   palette = "Greens",
