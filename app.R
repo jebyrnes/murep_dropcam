@@ -93,9 +93,8 @@ server <- function(input, output) {
     leaflet() |>
       
       #the setup
-      addTiles(group = "OSM") %>%
-      addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
-      addProviderTiles(providers$Stamen.TonerLite, group = "Toner Lite") %>%
+      addProviderTiles(providers$Esri.WorldTopoMap, group = "Topo Map") %>%
+      addProviderTiles(providers$Esri.WorldImagery, group = "World Imagery") %>%
       addProviderTiles(providers$Esri.WorldGrayCanvas, 
                        group = "ESRI World Gray Canvas",
                        options = providerTileOptions(noWrap = TRUE)) |>
@@ -122,11 +121,17 @@ server <- function(input, output) {
       addLegend("bottomright",
                 pal = pal,
                 values = tracks$`Kelp Dens#`,
-                title = "Kelp Relative Abundance Score",
+                title = "Kelp Relative <br>Abundance Score",
+                opacity = 1
+      ) %>%
+      addLegend("bottomleft",
+                pal = pal_biomass,
+                values = biomass$`Mean SL bi`,
+                title = "Mean Sugar Kelp <br>Wet Biomass (kg)",
                 opacity = 1
       ) %>%
       addLayersControl(
-        baseGroups = c("OSM", "ESRI World Gray Canvas", "Toner", "Toner Lite"),
+        baseGroups = c("Topo Map", "ESRI World Gray Canvas", "World Imagery"),
         overlayGroups = c("Dropcam Tracks", "Diver Biomass Surveys"),
         options = layersControlOptions(collapsed = FALSE)
       ) 
@@ -139,11 +144,6 @@ server <- function(input, output) {
   })
   
   
-  
-  observeEvent(input$data_sources, {
-    proxy <- leafletProxy('mymap')
-    if (!("Dropcam Tracks" %in% input$data_sources)){ proxy %>% removeShape(`Kelp Dens#`)}
-  })
   
   output$video <- renderUI({
 #    print(selected_track())
