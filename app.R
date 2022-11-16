@@ -39,28 +39,15 @@ ui <- fluidPage(
   titlePanel("The Subtidal Environment of Salem Sound"),
   
   fluidRow(
-    # column(1,
-    #        checkboxGroupInput("layers",
-    #                      "Basemap Choice",
-    #                      choices = c("Gray Canvas"),
-    #                      selected = "Gray Canvas"
-    #                      ),
-    #        
-    #        checkboxGroupInput("data_sources",
-    #                           "Data Sources",
-    #                           choices = c("Dropcam Tracks",
-    #                                       "Diver Biomass",
-    #                                       "Sidescan Survey Area"),
-    #                           selected = c("Dropcam Tracks"))
-    #        ),
+  
     
-    column(8,
+    column(7,
            HTML("<b>Click a Track to Open a Video</b>"),
            leafletOutput("mymap",
                          height = 700)
     ),
     
-    column(4,
+    column(5,
            HTML("<b>Video of Track</b>"),
            uiOutput("video")
     )
