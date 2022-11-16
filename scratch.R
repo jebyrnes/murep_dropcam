@@ -19,6 +19,9 @@ pal_biomass <- colorNumeric(
   domain = biomass$`Mean SL bi`)
 
 leaflet() |>
+  addTiles(group = "OSM (default)") %>%
+  addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
+  addProviderTiles(providers$Stamen.TonerLite, group = "Toner Lite") %>%
   addProviderTiles(providers$Esri.WorldGrayCanvas, 
                    group = "ESRI World Gray Canvas",
                               options = providerTileOptions(noWrap = TRUE)) |>
@@ -28,7 +31,8 @@ leaflet() |>
                weight = 3,
                layerId = ~`YouTube Li`,
                highlight = highlightOptions(color = "blue",weight = 5,
-                                            bringToFront = F, opacity = 1)) %>%
+                                            bringToFront = F, opacity = 1),
+               group = "Dropcam Tracks") %>%
     addLegend("bottomright",
               pal = pal,
               values = tracks$`Kelp Dens#`,
@@ -36,7 +40,9 @@ leaflet() |>
               opacity = 1
     ) %>%
   addLayersControl(
-    baseGroups = c("ESRI World Gray Canvas", "Toner by Stamen")
+    baseGroups = c("OSM (default)", "ESRI World Gray Canvas", "Toner", "Toner Lite"),
+    overlayGroups = c("Dropcam Tracks", "Diver Biomass Surveys"),
+    options = layersControlOptions(collapsed = FALSE)
   ) %>%
   addPolygons(data = biomass,
               fill = "black",
@@ -44,7 +50,8 @@ leaflet() |>
               color = ~pal_biomass(`Mean SL bi`),
               popup = ~paste(name, `Mean SL bi`),
               weight = 1.5,
-              opacity = 0.8,)
+              opacity = 0.8,
+              group = "Diver Biomass Surveys")
 
 
 
