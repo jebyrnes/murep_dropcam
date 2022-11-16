@@ -44,13 +44,21 @@ ui <- fluidPage(
     column(7,
            HTML("<b>Click a Track to Open a Video</b>"),
            leafletOutput("mymap",
-                         height = 700)
+                         height = 600)
     ),
     
     column(5,
            HTML("<b>Video of Track</b>"),
            uiOutput("video")
     )
+  ),
+  
+  fluidRow(
+    br(),br(),
+    img(src='nasa-logo-web-rgb_small.jpg', align = "left", height = 50),
+    img(src='umb_logo.png', align = "left", height = 50),
+    HTML("&nbsp; &nbsp; Data from <A href=https://www.nasa.gov/stem/murep/home/index.html>NASA MUREP</a> grant <a href=https://msiexchange.nasa.gov/attachments/4fac5315dbada300f8ebfd0e0f961966/award_abstract_University%20of%20Mass%20Boston%20OCEAN%202020.pdf>Using Hyperspectral Imagery to Assess the Effects of Warming on New England Kelp Forests</a>")
+    
   )
 )
 
