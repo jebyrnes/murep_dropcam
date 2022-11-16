@@ -117,6 +117,8 @@ server <- function(input, output) {
                    highlight = highlightOptions(color = "blue",weight = 5,
                                                 bringToFront = F, opacity = 1),
                    group = "Dropcam Tracks") %>%
+      
+      # add controls, legends, etc.
       addLegend("bottomright",
                 pal = pal,
                 values = tracks$`Kelp Dens#`,
