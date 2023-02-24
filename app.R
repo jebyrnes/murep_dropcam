@@ -101,8 +101,8 @@ server <- function(input, output) {
       
       #the data
       addPolygons(data = ss,
-                  fill = "darkblue",
-                  color = "darkblue",
+                  fill = "grey",
+                  color = "grey",
                   weight = 1,
                   opacity = 0.8,
                   group = "Sidescan Areas") |>
