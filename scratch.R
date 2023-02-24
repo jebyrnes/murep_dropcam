@@ -8,6 +8,8 @@ tracks <- read_sf("data/tracks/salem_sound_tracks_density.shp") |>
 
 biomass <- read_sf("data/biomass/salem_sound_dive_locs.shp")
 
+ss <- readRDS("data/Sidescan/sss_coverage.rds")
+
 
 pal <- colorNumeric(
   palette = "Greens",
@@ -26,6 +28,12 @@ leaflet() |>
                    group = "ESRI World Gray Canvas",
                               options = providerTileOptions(noWrap = TRUE)) |>
   setView(lat = 42.5264892, lng = -70.8222588, zoom = 12) |>
+  addPolygons(data = ss,
+              fill = "darkblue",
+              color = "darkblue",
+              weight = 1,
+              opacity = 0.8,
+              group = "Sidescan Areas") |>
   addPolylines(data = tracks,
                col = ~pal(`Kelp Dens#`),
                weight = 3,
@@ -41,7 +49,7 @@ leaflet() |>
     ) %>%
   addLayersControl(
     baseGroups = c("OSM (default)", "ESRI World Gray Canvas", "Toner", "Toner Lite"),
-    overlayGroups = c("Dropcam Tracks", "Diver Biomass Surveys"),
+    overlayGroups = c("Dropcam Tracks", "Diver Biomass Surveys", "Sidescan Areas"),
     options = layersControlOptions(collapsed = FALSE)
   ) %>%
   addPolygons(data = biomass,
@@ -51,7 +59,7 @@ leaflet() |>
               popup = ~paste(name, `Mean SL bi`),
               weight = 1.5,
               opacity = 0.8,
-              group = "Diver Biomass Surveys")
+              group = "Diver Biomass Surveys") 
 
 
 

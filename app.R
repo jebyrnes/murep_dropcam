@@ -24,6 +24,10 @@ tracks <- tracks |>
 
 biomass <- read_sf("data/biomass/salem_sound_dive_locs.shp")
 
+#sidescan areas
+ss <- readRDS("data/Sidescan/sss_coverage.rds")
+
+
 pal <- colorNumeric(
   palette = "Greens",
   domain = tracks$`Kelp Dens#`)
@@ -96,6 +100,13 @@ server <- function(input, output) {
       setView(lat = 42.5264892, lng = -70.8222588, zoom = 12) |>
       
       #the data
+      addPolygons(data = ss,
+                  fill = "darkblue",
+                  color = "darkblue",
+                  weight = 1,
+                  opacity = 0.8,
+                  group = "Sidescan Areas") |>
+      
       addPolygons(data = biomass,
                   fill = "black",
                   stroke = TRUE,
@@ -127,7 +138,7 @@ server <- function(input, output) {
       ) %>%
       addLayersControl(
         baseGroups = c("Topo Map", "ESRI World Gray Canvas", "World Imagery"),
-        overlayGroups = c("Dropcam Tracks", "Diver Biomass Surveys"),
+        overlayGroups = c("Dropcam Tracks", "Diver Biomass Surveys", "Sidescan Areas"),
         options = layersControlOptions(collapsed = FALSE)
       ) 
     
